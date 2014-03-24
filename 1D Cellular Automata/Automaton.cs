@@ -21,7 +21,7 @@ namespace _1D_Cellular_Automata
         {
             get { return size; }
         }
-        private int size = 5;
+        private int size;
 
         public int Generation
         {
@@ -29,8 +29,9 @@ namespace _1D_Cellular_Automata
         }
         private int generation = 0;
 
-        public Automaton(int width, int rule)
+        public Automaton(int width, int rule, int size)
         {
+            this.size = size;
             cells = new char[width / size];
             string ruleString = ToBin(rule, 8);
             ruleset = ruleString.ToCharArray();

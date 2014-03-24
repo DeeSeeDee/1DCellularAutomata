@@ -2,8 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="MainWindow" Height="99" Width="231">
+        Title="MainWindow" Height="155" Width="285">
     <Grid Name="mainGrid">
-        <Button Name="goButton" Content="Go!" HorizontalAlignment="Left" Margin="100,23,0,0" VerticalAlignment="Top" Width="45" Click="Button_Click"/>
+        <Button Name="goButton" Content="Go!" HorizontalAlignment="Left" Margin="208,49,0,0" VerticalAlignment="Top" Width="45" Click="Button_Click"/>
+        <Label Content="Rule:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="47,23,0,0"/>
+        <Label Content="Draw Timer:" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top"/>
+        <Label Content="Cell Size:" HorizontalAlignment="Left" Margin="27,75,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

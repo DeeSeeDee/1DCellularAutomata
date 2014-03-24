@@ -25,7 +25,9 @@ namespace _1D_Cellular_Automata
         Canvas canvas;
         Automaton automaton;
         DispatcherTimer timer;
-        IntegerUpDown numberControl;
+        IntegerUpDown caRuleNumber;
+        IntegerUpDown timerDelay;
+        IntegerUpDown cellSize;
         DrawWindow drawWindow;
         int xPointer;
         int yPointer;
@@ -35,19 +37,45 @@ namespace _1D_Cellular_Automata
         {
             drawWindow = new DrawWindow();
             InitializeComponent();
-            numberControl = new IntegerUpDown();
-            numberControl.AllowSpin = true;
-            numberControl.Maximum = 256;
-            numberControl.Minimum = 0;
-            numberControl.AllowSpin = true;
-            numberControl.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            numberControl.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            numberControl.Margin = new Thickness(45, 23, 0, 0);
-            numberControl.Value = 1;
-            this.mainGrid.Children.Add(numberControl);
+
+            caRuleNumber = new IntegerUpDown();
+            caRuleNumber.AllowSpin = true;
+            caRuleNumber.Maximum = 256;
+            caRuleNumber.Minimum = 0;
+            caRuleNumber.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            caRuleNumber.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            caRuleNumber.Margin = new Thickness(95, 25, 0, 0);
+            caRuleNumber.Value = 1;
+
+            timerDelay = new IntegerUpDown();
+            timerDelay.AllowSpin = true;
+            timerDelay.Maximum = 1000;
+            timerDelay.Minimum = 1;
+            timerDelay.Value = 100;
+            timerDelay.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            timerDelay.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            timerDelay.Margin = new Thickness(95, 55, 0, 0);
+
+            cellSize = new IntegerUpDown();
+            cellSize.AllowSpin = true;
+            cellSize.Maximum = 20;
+            cellSize.Minimum = 1;
+            cellSize.Value = 10;
+            cellSize.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            cellSize.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            cellSize.Margin = new Thickness(95, 80, 0, 0);
+
+            this.mainGrid.Children.Add(caRuleNumber);
+            this.mainGrid.Children.Add(timerDelay);
+            this.mainGrid.Children.Add(cellSize);
             timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             timer.Tick += TimerTick;
+            drawWindow.Closed += drawWindow_Closed;
+        }
+
+        void drawWindow_Closed(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         void TimerTick(object sender, EventArgs e)
@@ -76,14 +104,14 @@ namespace _1D_Cellular_Automata
         private void DrawRow()
         {
             xPointer = 0;
-            while ( xPointer < (canvas.Width / squareSize) )
+            while (xPointer < (canvas.Width / squareSize))
             {
                 char[] currentCells = automaton.Cells;
                 Rectangle rectangle = new Rectangle();
                 rectangle.Width = rectangle.Height = squareSize;
                 if (currentCells[xPointer] == '1')
                 {
-                    rectangle.Fill = new SolidColorBrush(Colors.Azure);
+                    rectangle.Fill = new SolidColorBrush(Colors.DimGray);
                 }
                 else
                 {
@@ -102,7 +130,8 @@ namespace _1D_Cellular_Automata
         {
             this.yPointer = 0;
             drawWindow.Content = null;
-            int caNum = (int)numberControl.Value;
+            timer.Interval = new TimeSpan(0, 0, 0, 0, (int)timerDelay.Value);
+            int caNum = (int)caRuleNumber.Value;
             canvas = new Canvas();
             canvas.Width = 550;
             canvas.Height = 600;
@@ -111,7 +140,7 @@ namespace _1D_Cellular_Automata
             Canvas.SetLeft(canvas, 20);
             drawWindow.Content = canvas;
 
-            automaton = new Automaton((int)canvas.Width, caNum);
+            automaton = new Automaton((int)canvas.Width, caNum, (int)cellSize.Value);
             squareSize = automaton.Size;
 
             drawWindow.Show();
